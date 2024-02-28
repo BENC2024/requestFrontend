@@ -1,0 +1,50 @@
+
+<table class="table table-hover">
+   <thead>
+      
+      <tr>
+         <th colspan="4" class="text-center">Solicitudes creadas</th>
+         <!-- <th colspan="4" class="text-center">Solicitudes creadas</th>
+         <th colspan="4" class="text-center">Solicitudes creadas</th> -->
+      </tr>
+
+      <tr>
+         <th>Categoría</th>
+         <th>Monto</th>
+         <th>Estado</th>
+         <!-- <th>Solicitante</th> -->
+         <th>Fecha</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr>
+         <td>Categoría 1</td>
+         <td>Monto 1</td>
+         <td>Estado 1</td>
+         <td>Fecha 1</td>
+      </tr>
+      <tr>
+         <td>Categoría 2</td>
+         <td>Monto 2</td>
+         <td>Estado 2</td>
+         <td>Fecha 2</td>
+      </tr>
+      <ng-container *ngFor="let req of listRequest, let i = index">
+         <ng-container ngIf="">
+            <ng-container
+               *ngIf="
+                  category_s.toLowerCase().includes(req.getcategory().nameCategory) ||
+                  state_s.toLowerCase().includes(req.getstatus().nameStatus) ||
+                  word_s.toLowerCase().includes(req.getdescription())">
+                     <tr (click)="detailRequest(req.getid())">
+                        <td>{{req.getcategory().nameCategory}}</td>
+                        <td>{{req.getamount()}}</td>
+                        <td>{{req.getstatus().nameStatus}}</td>
+                        <!-- <td>{{req.terceroId.nombreTercero}}</th> -->
+                        <td>{{req.getdate()}}</td>
+                     </tr>
+            </ng-container>
+         </ng-container>
+      </ng-container>
+   </tbody>
+</table>

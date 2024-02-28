@@ -1,0 +1,93 @@
+
+<form>
+
+   <!--NOMBRE Y LA HORA DEL SOLICITANTE-->
+   <div class="row">
+      <span class="mb-3 col-6">
+         <div>
+            <div>
+               <label class="form-label title" for="username">Nombre solicitante: </label>
+            </div>
+            <div>
+               <label id="username" class="form-label">{{resumen?.getthirdParties().nameThirdParties}}</label>
+            </div>
+         </div>
+      </span>
+
+      <span class="mb-3 col-6">
+         <div>
+            <div>
+               <label class="form-label title" for="username">Fecha y hora: </label>
+            </div>
+            <div>
+               <label id="username" class="form-label">{{datemoment}}</label>
+            </div>
+         </div>
+      </span>
+   </div>
+
+   <!--MONTO DE VALOR DEL SOLICITANTE-->
+   <div class="row">
+      <span class="mb-3 col-6">
+         <div>
+            <label class="form-label title" for="amount">Monto de la solicitud: </label>
+         </div>
+         <div>
+            <label class="form-label" id="amount">{{resumen?.getamount()}}</label>
+         </div>
+      </span>
+
+      <span class="mb-3 col-6">
+         <label class="form-label title me-2" for="category">Categoría: </label>
+         <label class="form-label" id="category">{{resumen?.getcategory().nameCategory}}</label>
+      </span>
+   </div>
+
+
+   <!--DESCRIPCION DEL SOLICITANTE-->
+   <div class="row mb-3">
+      <span class="col-12">
+         <label class="form-label title" for="description">Descripción: </label>
+      </span>
+      <span class="col-12">
+         <p id="description">{{resumen?.getdescription()}}</p>
+      </span>
+   </div>
+
+
+   <!--FIRMA PARA EL ENVIO-->
+   <div class="row mb-3">
+      <span class="col-6">
+         <div>
+            <label class="form-label title" for="description">Firma solicitante: </label>
+         </div>
+         <div>
+            <img
+                  src="image source"
+                  class=""
+                  alt="Imagen de la persona"
+               />
+         </div>
+      </span>
+
+      <span class="col-6">
+         <div>
+            <label class="form-label title me-2" for="description">Estado: </label>
+            <label class="form-label" id="description"> {{resumen?.getstatus().nameStatus}}</label>
+         </div>
+      </span>
+   </div>
+
+   <div class="row mb-3">
+      <strong class="text-center">Esta a punto de enviar una nueva solicitud <br> ¿Desea continuar?</strong>
+      <div class="container d-flex justify-content-center">
+         <button type="submit" class="btn btn-success m-1" (click)="saveNewRequest()">Enviar solicitud</button>
+         <button type="button" class="btn btn-secondary m-1" (click)="return()">Regresar</button>
+      </div>
+   </div>
+
+</form>
+
+
+
+

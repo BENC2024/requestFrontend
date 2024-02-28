@@ -1,0 +1,105 @@
+
+<form [formGroup]="formRequest">
+
+   <!--NOMBRE DEL SOLICITANTE-->
+   <div class="row">
+      <span class="mb-3 col-6">
+         <div>
+            <div>
+               <label class="form-label title" for="username">Nombre solicitante: </label>
+            </div>
+            <div>
+               <input formControlName="nameThirdParties_v" type="text" list="terceros" id="username" class="form-control" placeholder="Nombre del solicitante" required autocomplete="off">
+               <datalist id="terceros">
+                  <option value="tercero">tercero1</option>
+                  <option *ngFor="let list of dataThirdParties" [value]="list._id" (click)="objThird = list">{{list.nameThirdParties}}</option>
+               </datalist>
+            </div>
+         </div>
+      </span>
+   </div>
+
+   <!--MONTO DE VALOR DEL SOLICITANTE-->
+   <div class="row">
+      <span class="mb-3 col-6">
+         <div>
+            <label class="form-label title" for="amount">Monto de la solicitud: </label>
+         </div>
+         <div>
+            <input formControlName="amount_v" class="form-control" type="number" id="amount" placeholder="Ejemplo: 1000" required step="100">
+         </div>
+      </span>
+
+   <!--CATEGORIA DEL SOLICITANTE-->
+      <span class="mb-3 col-6">
+         <div>
+            <label class="form-label title me-2" for="category">Categoría: </label>
+         </div>
+         <div>
+            <select formControlName="category_v" class="btn btn-primary dropdown-toggle" name="category" id="category" required>
+               <option value="">Categorias:</option>
+               <option *ngFor="let cat of dataCategory" [value]="cat._id" (click)="objCategory = cat">{{cat.nameCategory}}</option>
+            </select>
+         </div>
+      </span>
+   </div>
+
+   <!--DESCRIPCION DEL SOLICITANTE-->
+   <div class="row mb-3">
+      <span class="col-12">
+         <label class="form-label title" for="description">Descripción: </label>
+      </span>
+      <span class="col-12">
+         <textarea name="description" id="description" formControlName="description_v" class="form-control"
+            placeholder="Descripción máximo 200 caracteres"
+            maxlength="210" required style="resize: none; padding: 0.375rem 0.75rem;"></textarea>
+      </span>
+   </div>
+   
+   <!--Validaciones-->
+   <div class="row m-1">
+      <div class="col-6">
+         <div> <!--Alertas-->
+            <span class="alert alert-terceros col-12" [hidden]="nameThirdParties_v.valid || (nameThirdParties_v.pristine && nameThirdParties_v.untouched)">
+               <span *ngIf="nameThirdParties_v.errors?.['required']">-Necesario agregar nombre del solicitante</span>
+               <!-- <span *ngIf="nameThirdParties_v.errors?.['opcionInvalida']">-Seleccionar nombre</span> -->
+            </span>
+         </div>
+         <div>
+            <span class="alert alert-monto col-12" [hidden]="amount_v.valid || (amount_v.pristine && amount_v.untouched)">
+               <span *ngIf="amount_v.errors?.['required']">-Error en el ingreso de valor</span>
+               <span *ngIf="amount_v.errors?.['min']">-No se admiten negativos o inferiores a saldo mínimo</span>
+               <span *ngIf="amount_v.errors?.['max']">-No se admiten valores superiores al saldo límite</span>
+               <span *ngIf="amount_v.errors?.['pattern']">-No válido</span>
+            </span>
+         </div>
+         <div>
+            <span class="alert alert-categoria col-12" [hidden]="category_v.valid || (category_v.pristine && category_v.untouched)">
+               -Categoria es obligatoria
+            </span>
+         </div>
+         <div>
+            <span class="alert alert-descripcion col-12" [hidden]="description_v.valid || (description_v.pristine && description_v.untouched)">
+               <span *ngIf="description_v.errors?.['required']">-Descripción requerida</span>
+               <span *ngIf="description_v.errors?.['minLength']">-Agregar un descripción mayor a 10 caracteres</span>
+               <span *ngIf="description_v.errors?.['maxLength']">-Agregar descripción menor a 200 caracteres</span>
+            </span>
+         </div>
+         <div>
+            <span class="success col-12" [hidden]="formRequest.invalid">Todo esta listo</span>
+         </div>
+      </div>
+
+   <!--BOTONES PARA TENER UNA VISTA PREVIA O CANCELAR LA SOLICITUD-->
+      <div class="col-6">
+         <div>
+            <div class="d-flex justify-content-center m-1">
+               <button type="button" class="btn btn-primary m-1" [disabled]="formRequest.invalid" (click)="previewRequest()">Enviar</button>
+               <button type="button" class="btn btn-danger m-1" (click)="cancel()">Cancelar</button>
+            </div>
+         </div>
+      </div>
+   </div>
+
+</form>
+

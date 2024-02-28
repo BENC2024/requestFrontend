@@ -1,0 +1,127 @@
+
+<!-- <form action="/upload" method="post" enctype="multipart/form-data"> -->
+<form>
+
+   <!--NOMBRE Y LA HORA DEL SOLICITANTE-->
+   <div class="row">
+      <span class="mb-3 col-6">
+         <div>
+            <div>
+               <label class="form-label title" for="username">Nombre solicitante: </label>
+            </div>
+            <div>
+               <label id="username" class="form-label">{{request?.getthirdParties().nameThirdParties}}</label>
+            </div>
+         </div>
+      </span>
+
+      <span class="mb-3 col-6">
+         <div>
+            <div>
+               <label class="form-label title" for="username">Fecha y hora: </label>
+            </div>
+            <div>
+               <label id="username" class="form-label">{{date}}</label>
+            </div>
+         </div>
+      </span>
+   </div>
+
+   <!--MONTO DE VALOR DEL SOLICITANTE-->
+   <div class="row">
+      <span class="mb-3 col-6">
+         <div>
+            <label class="form-label title" for="amount">Monto de la solicitud: </label>
+         </div>
+         <div>
+            <label class="form-label" id="amount">{{request?.getamount()}}</label>
+         </div>
+      </span>
+
+      <span class="mb-3 col-6">
+         <label class="form-label title me-2" for="category">Categoría: </label>
+         <label class="form-label" id="category">{{request?.getcategory().nameCategory}}</label>
+      </span>
+   </div>
+
+
+   <!--DESCRIPCION DEL SOLICITANTE-->
+   <div class="row mb-3">
+      <span class="col-12">
+         <label class="form-label title" for="description">Descripción: </label>
+      </span>
+      <span class="col-12">
+         <p id="description">{{request?.getdescription()}}</p>
+      </span>
+   </div>
+
+
+   <!--FIRMA PARA EL ENVIO-->
+   <div class="row mb-3">
+      <span class="col-6">
+         <div>
+            <label class="form-label title" for="description">Firma solicitante: </label>
+         </div>
+         <div>
+            <img
+                  src="image source"
+                  class="img-fluid rounded-top"
+                  alt=""
+               />
+         </div>
+      </span>
+
+      <span class="col-6">
+         <div>
+            <label class="form-label title me-2" for="description">Estado: </label>
+            <label class="form-label" id="description"> {{request?.getstatus().nameStatus}}</label>
+         </div>
+
+         <div>
+            <ng-container *ngIf="request?.getuser().roleId.nameRole.toLowerCase().includes('Colaborador')">
+               <ng-container *ngIf="request?.getstatus().statusId.nameStatus.toLowerCase().includes('En proceso')">
+                  <label class="form-label title me-2" for="archivo">Adjuntar factura: </label>
+                  <input type="file" id="archivo" formControlName="file_v" class="form-control" placeholder="Solo jpg,pdf,jpeg" accept=".jpg, .pdf, .jpeg" required readonly>
+               </ng-container>
+            </ng-container>
+         </div>
+      </span>
+   </div>
+
+   <div class="row mb-3">
+      <div class="container d-flex justify-content-center">
+         <ng-container *ngIf="request?.getuser().roleId.nameRole.toLowerCase().includes('Administrador')">
+            <ng-container *ngIf="request?.getstatus().statusId.nameStatus.toLowerCase().includes('Pendiente')">
+               <button type="button" class="btn btn-success m-1" (click)="authorize()">Autorizar</button>
+               <button type="button" class="btn btn-danger m-1" (click)="denied()">Denegar</button>
+            </ng-container>
+            <ng-container *ngIf="request?.getstatus().statusId.nameStatus.toLowerCase().includes('En proceso')">
+               <button type="button" class="btn btn-success m-1" (click)="finalize()">Finalizar proceso</button>
+            </ng-container>
+         </ng-container>
+
+         <ng-container *ngIf="request?.getuser().roleId.nameRole.toLowerCase().includes('Colaborador')">
+            <ng-container *ngIf="request?.getstatus().statusId.nameStatus.toLowerCase().includes('En proceso')">
+               <button type="button" class="btn btn-success m-1" (click)="sendInvoice()">Enviar factura</button>
+            </ng-container>
+         </ng-container>
+
+         <button type="button" class="btn btn-success m-1" (click)="close()">Cerrar</button>
+      </div>
+   </div>
+
+</form>
+
+<!--
+   Si ingreso como colaborador
+   - Se puede editar algunos campos de la solicitud del tercero o eliminar, mientras el estado sea pendiente
+   - Se puede adjuntar la factura (editar) solo si la solicitud esta en el siguiente estado: en proceso
+   - Se ha finalizado el proceso (Aprobado) solo se podrá ver la solicitud completa
+   Si ingreso como administrador
+   - Si cumple las condiciones, se cambia al siguiente estado (en proceso) habilitando la opcion de adjuntar factura
+     pero sin eliminar, ni actualizar otros cambios.
+   - Una vez adjuntada la factura, el administrador revisará y si todo esta bien, se finaliza el proceso (aprobado)
+   - Si no cumple las condiciones, la solicitud pasa a denegado y no se adjunta factura
+-->
+
+ 

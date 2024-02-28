@@ -1,0 +1,15 @@
+<!--Este es el listado de las solicitudes-->
+
+<!--Componente de busqueda-->
+<panel-search (category_s)="category_s" (state_s)="state_s" (word_s)="word_s"></panel-search>
+
+
+<!--Componente de listado-->
+<table-request [category_s]="category_s" [state_s]="state_s" [word_s]="word_s"></table-request>
+
+
+<!--Boton para nueva solicitud de gasto, o de reembolso-->
+<ng-container>
+   <btn-new-request></btn-new-request>
+</ng-container>
+
