@@ -15,7 +15,6 @@ export class DetailRequestComponent {
 
    //Id de la solicitud que llega de la tabla
    @Input() _id: string = ""
-
    date: any
    request?: RequestClass
 
@@ -24,6 +23,13 @@ export class DetailRequestComponent {
       private modalService: NgbModal,
       protected activeModal: NgbActiveModal )
       {}
+
+      formRequest = new FormGroup({
+         'file_v': new FormControl('', [
+            Validators.required
+         ])
+      })
+      get file_v(){ return this.formRequest?.get('file_v') as FormControl }
 
    async ngOnInit(){
       this.requestService.detailRequest$(this._id).subscribe( (data$) => {
@@ -41,44 +47,46 @@ export class DetailRequestComponent {
    }
 
    authorize(){
-      let idStatus = ''
+      let idStatus = '65d6a435c04706dd1cdafd6d' //APROBADO
       this.requestService.updateRequestStatus$(this.request?._id).subscribe( 
          (data) => {
-            (data)? alert('Solicitud creada exitosamente') : alert('Problema enviando solicitud')
+            (data)? alert('Solicitud autorizada') : alert('Problema con el cambio de estado de la solicitud')
          })
       this.modalService.dismissAll()
    }
    denied(){
-      let idStatus = ''
+      let idStatus = '65d6a473c04706dd1cdafd6f' //RECHAZADO
       this.requestService.updateRequestStatus$(this.request?._id).subscribe( 
          (data) => {
-            (data)? alert('Solicitud creada exitosamente') : alert('Problema enviando solicitud')
+            (data)? alert('Solicitud creada exitosamente') : alert('Problema con el cambio de estado de la solicitud')
          })
       this.modalService.dismissAll()
    }
    finalize(){
-      let idStatus = ''
+      let idStatus = '65d6a464c04706dd1cdafd6e' //FINALIZADO
       this.requestService.updateRequestStatus$(this.request?._id).subscribe( 
          (data) => {
-            (data)? alert('Solicitud creada exitosamente') : alert('Problema enviando solicitud')
+            (data)? alert('Solicitud creada exitosamente') : alert('Problema con el cambio de estado de la solicitud')
          })
       this.modalService.dismissAll()
    }
    sendInvoice(){
-      this.requestService.updateRequestInvoice$(this.request?._id, this.formRequest.value['file_v']).subscribe( 
+      const formData = new FormData();
+      formData.append('archivo', this.formRequest.value['file_v']);
+      this.requestService.updateRequestInvoice$(this.request?._id,formData).subscribe( 
          (data) => {
-            (data)? alert('Solicitud creada exitosamente') : alert('Problema enviando solicitud')
+            (data)? alert('Factura enviada') : alert('Problema enviando factura')
          })
       this.modalService.dismissAll()
    }
 
-   //OTRAS FUNCIONES
-   formRequest = new FormGroup({
-      'file_v': new FormControl('', [
-         Validators.required
-      ])
-   })
-   //getter de validaciones
-   get file_v(){ return this.formRequest.get('file_v') as FormControl }
+   deleteRequests(){
+      this.requestService.detailRequest$(this.request?._id).subscribe( 
+         (data) => {
+            (data)? alert('Solicitud borrada exitosamente') : alert('Problemas borrando factura')
+      })
+      this.modalService.dismissAll()
+   }
+
 
 }

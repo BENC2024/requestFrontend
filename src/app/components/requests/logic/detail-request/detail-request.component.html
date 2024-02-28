@@ -66,7 +66,7 @@
             <ng-container *ngIf="usuario.roleId.nombreRole.toLowerCase().includes('Colaborador')">
                <ng-container *ngIf="request?.getstatus().statusId.nameStatus.toLowerCase().includes('En proceso')">
 
-                  <form [formGroup]="formRequest" [action]="sendInvoice()" method="POST" enctype="multipart/form-data">
+                  <form [formGroup]="formRequest" (ngSubmit)="sendInvoice()" enctype="multipart/form-data">
                      <label class="form-label title me-2" for="archivo">Adjuntar factura: </label>
                      <input type="file" name="invoice" id="archivo" formControlName="file_v" class="form-control" placeholder="Solo jpg,pdf,jpeg" accept=".jpg, .pdf, .jpeg" required readonly>
                      <button type="submit" [hidden]="file_v.valid || (file_v.pristine && file_v.untouched)">Enviar</button>
@@ -91,16 +91,20 @@
                <button type="button" class="btn btn-success m-1" (click)="authorize()">Autorizar</button>
                <button type="button" class="btn btn-danger m-1" (click)="denied()">Denegar</button>
             </ng-container>
-            <ng-container *ngIf="request?.getstatus().statusId.nameStatus.toLowerCase().includes('En proceso')">
+            <ng-container *ngIf="request?.getstatus().statusId.nameStatus.toLowerCase().includes('Aprobado')">
                <button type="button" class="btn btn-success m-1" (click)="finalize()">Finalizar proceso</button>
             </ng-container>
          </ng-container>
 
          <ng-container *ngIf="usuario.roleId.nombreRole.toLowerCase().includes('Colaborador')">
-            <ng-container *ngIf="request?.getstatus().statusId.nameStatus.toLowerCase().includes('En proceso')">
+            <ng-container *ngIf="request?.getstatus().statusId.nameStatus.toLowerCase().includes('Aprobado')">
                <button type="button" class="btn btn-success m-1" (click)="sendInvoice()">Enviar factura</button>
             </ng-container>
          </ng-container>
+
+            <ng-container *ngIf="request?.getstatus().statusId.nameStatus.toLowerCase().includes('Rechazado')">
+               <button type="button" class="btn btn-success m-1" (click)="deleteRequest()">Eliminar factura</button>
+            </ng-container>
 
          <button type="button" class="btn btn-success m-1" (click)="close()">Cerrar</button>
       </div>
