@@ -21,8 +21,7 @@ import { MdlPreviewNewRequestComponent } from './components/requests/layout/moda
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { NavComponent } from './components/nav/nav.component';
-import { MdlRefundRequestComponent } from './components/requests/layout/modals/mdl-refund-request/mdl-refund-request.component';
-import { RefundRequestComponent } from './components/requests/logic/refund-request/refund-request.component';
+
 
 @NgModule({
   declarations: [
@@ -41,8 +40,6 @@ import { RefundRequestComponent } from './components/requests/logic/refund-reque
     LoginComponent,
     HomeComponent,
     NavComponent,
-    MdlRefundRequestComponent,
-    RefundRequestComponent
   ],
   imports: [
     BrowserModule,

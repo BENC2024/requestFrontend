@@ -43,7 +43,7 @@ export class NewRequestComponent {
 
    previewRequest(){
 
-      let idStatus = '' //Estados de una solicitud es : Pendiente, En proceso, Aprobado, Denegado
+      let idStatus = '65d6a34bc04706dd1cdafd6c' //Estados de una solicitud es : Pendiente, Aprobado, Finalizado Denegado
 
       this.requestNew = new RequestClass(
          this.dataThirdParties._id,
@@ -51,6 +51,8 @@ export class NewRequestComponent {
          idStatus,
          this.formRequest.value['description_v'],
          this.formRequest.value['amount_v'],
+         null,
+         null
       )
 
       this.requestService.previewRequest$(this.requestNew)

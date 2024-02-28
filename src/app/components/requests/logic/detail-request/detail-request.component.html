@@ -1,5 +1,4 @@
 
-<!-- <form action="/upload" method="post" enctype="multipart/form-data"> -->
 <form>
 
    <!--NOMBRE Y LA HORA DEL SOLICITANTE-->
@@ -55,21 +54,7 @@
       </span>
    </div>
 
-
-   <!--FIRMA PARA EL ENVIO-->
    <div class="row mb-3">
-      <span class="col-6">
-         <div>
-            <label class="form-label title" for="description">Firma solicitante: </label>
-         </div>
-         <div>
-            <img
-                  src="image source"
-                  class="img-fluid rounded-top"
-                  alt=""
-               />
-         </div>
-      </span>
 
       <span class="col-6">
          <div>
@@ -77,11 +62,22 @@
             <label class="form-label" id="description"> {{request?.getstatus().nameStatus}}</label>
          </div>
 
-         <div>
-            <ng-container *ngIf="request?.getuser().roleId.nameRole.toLowerCase().includes('Colaborador')">
+         <div><!--Agregar la informacion del usuario que inicia session-->
+            <ng-container *ngIf="usuario.roleId.nombreRole.toLowerCase().includes('Colaborador')">
                <ng-container *ngIf="request?.getstatus().statusId.nameStatus.toLowerCase().includes('En proceso')">
-                  <label class="form-label title me-2" for="archivo">Adjuntar factura: </label>
-                  <input type="file" id="archivo" formControlName="file_v" class="form-control" placeholder="Solo jpg,pdf,jpeg" accept=".jpg, .pdf, .jpeg" required readonly>
+
+                  <form [formGroup]="formRequest" [action]="sendInvoice()" method="POST" enctype="multipart/form-data">
+                     <label class="form-label title me-2" for="archivo">Adjuntar factura: </label>
+                     <input type="file" name="invoice" id="archivo" formControlName="file_v" class="form-control" placeholder="Solo jpg,pdf,jpeg" accept=".jpg, .pdf, .jpeg" required readonly>
+                     <button type="submit" [hidden]="file_v.valid || (file_v.pristine && file_v.untouched)">Enviar</button>
+
+                     <div> <!--Validación-->
+                        <span class="alert alert-terceros col-12" [hidden]="file_v.valid || (file_v.pristine && file_v.untouched)">
+                           <span *ngIf="file_v.errors?.['required']">-Necesario agregar factura</span>
+                        </span>
+                     </div>
+                  </form>
+
                </ng-container>
             </ng-container>
          </div>
@@ -90,7 +86,7 @@
 
    <div class="row mb-3">
       <div class="container d-flex justify-content-center">
-         <ng-container *ngIf="request?.getuser().roleId.nameRole.toLowerCase().includes('Administrador')">
+         <ng-container *ngIf="usuario.roleId.nombreRole.toLowerCase().includes('Administrador')">
             <ng-container *ngIf="request?.getstatus().statusId.nameStatus.toLowerCase().includes('Pendiente')">
                <button type="button" class="btn btn-success m-1" (click)="authorize()">Autorizar</button>
                <button type="button" class="btn btn-danger m-1" (click)="denied()">Denegar</button>
@@ -100,7 +96,7 @@
             </ng-container>
          </ng-container>
 
-         <ng-container *ngIf="request?.getuser().roleId.nameRole.toLowerCase().includes('Colaborador')">
+         <ng-container *ngIf="usuario.roleId.nombreRole.toLowerCase().includes('Colaborador')">
             <ng-container *ngIf="request?.getstatus().statusId.nameStatus.toLowerCase().includes('En proceso')">
                <button type="button" class="btn btn-success m-1" (click)="sendInvoice()">Enviar factura</button>
             </ng-container>

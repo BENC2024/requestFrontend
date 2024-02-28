@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject, catchError, forkJoin, map, mergeMap, of, throwError } from 'rxjs';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RequestClass } from '../../models/classes/request-class';
+import Swal from 'sweetalert2'
 
 @Injectable({
   providedIn: 'root'
@@ -25,31 +26,19 @@ export class RequestService {
    request$?: RequestClass
 
    search$():Observable<{ category$: any, status$: any }>{
-      return this.httpClient.get(`${this.baseURI}/listCategory`).pipe(   // Listado de categorias
-         mergeMap( (data1) => this.httpClient.get(`${this.baseURI}/listStatus`).pipe(
-            map( (data2) => ( {category$: data1, status$: data2} ) )   //Listado de estados
+      return this.httpClient.get(`${this.baseURI}/obtenerTodasLasCategorias`).pipe(   // Listado de categorias
+         mergeMap( (data1) => this.httpClient.get(`${this.baseURI}/obtenerTodasLosEstados`).pipe(
+            map( (data2) => ( {category$: data1, status$: data2} ) )  //Listado de estados
          ))
       )
    }
 
-   newRequest$():Observable<any>{ // METODO AL MOMENTO DE HACER UNA NUEVA SOLICITUD. SE CONSULTA USUARIO, CATEGORIA, ESTADO, TERCEROS, EMPRESA ...
-      this.listadoCategorias = this.httpClient.get(`${this.baseURI}/listCategory`).pipe(
-         catchError(
-            e => {
-               alert('No se puede obtener categorias para nueva solicitud')
-               return (e)
-            } 
-         )
+   newRequest$():Observable<{ category$: any, third$: any }>{ // METODO AL MOMENTO DE HACER UNA NUEVA SOLICITUD. SE CONSULTA USUARIO, CATEGORIA, ESTADO, TERCEROS, EMPRESA ...
+      return this.httpClient.get(`${this.baseURI}/obtenerTodasLasCategorias`).pipe(   // Listado de categorias
+         mergeMap( (data1) => this.httpClient.get(`${this.baseURI}/obtenerTodosLosTerceros`).pipe(
+            map( (data2) => ( {category$: data1, third$: data2} ) )   //Listado de terceros
+         ))
       )
-      this.listadoTerceros = this.httpClient.get(`${this.baseURI}/listThirdParties`).pipe(
-         catchError(
-            e => {
-               alert('No se puede obtener listado de terceros para nueva solicitud')
-               return (e)
-            } 
-         )
-      )
-      return forkJoin([this.listadoCategorias,this.listadoTerceros])
    }
 
    //Metodos para la vista previa
@@ -66,24 +55,24 @@ export class RequestService {
       return this.httpClient.post(`${this.baseURI}/saveRequest`,resumen).pipe(
          catchError(
             e => {
-               alert('Ha ocurrido un error creado solicitud')
+               Swal.fire("No se puede guardar la solicitud");
                return e
             })
       )
    }
 
    listRequest$(): Observable<any>{
-      return this.httpClient.get(`${this.baseURI}/listRequest`).pipe(
+      return this.httpClient.get(`${this.baseURI}/obtenerTodasLasSolicitudes`).pipe(
          catchError(
             e => {
-               alert('Ha ocurrido un error listando solicitudes')
+               Swal.fire("No se puede acceder a las categorias");
                return e
             })
       )
    }
 
    detailRequest$(id:string): Observable<any>{
-      return this.httpClient.get(`${this.baseURI}/detailRequest/${id}`).pipe(
+      return this.httpClient.get(`${this.baseURI}/obtenerSolicitud/${id}`).pipe(
          catchError(
             e => {
                alert('Ha ocurrido un error detallando solicitud')
@@ -93,7 +82,27 @@ export class RequestService {
    }
 
    updateRequest$(id:string, resumen?: RequestClass): Observable<any>{
-      return this.httpClient.put(`${this.baseURI}/updateRequest/${id}`,resumen).pipe(
+      return this.httpClient.put(`${this.baseURI}/modificarSolicitud/${id}`,resumen).pipe(
+         catchError(
+            e => {
+               alert('Ha ocurrido un error actualizando solicitud')
+               return e
+            })
+      )
+   }
+
+   updateRequestStatus$(id:string, resumen?: RequestClass): Observable<any>{
+      return this.httpClient.put(`${this.baseURI}/modificarEstadoSolicitud/${id}`,resumen).pipe(
+         catchError(
+            e => {
+               alert('Ha ocurrido un error actualizando solicitud')
+               return e
+            })
+      )
+   }
+
+   updateRequestInvoice$(id:string, factura: any): Observable<any>{
+      return this.httpClient.post(`${this.baseURI}/guardarFactura/${id}`,factura).pipe(
          catchError(
             e => {
                alert('Ha ocurrido un error actualizando solicitud')
@@ -103,7 +112,7 @@ export class RequestService {
    }
 
    deleteRequest$(id:string): Observable<any>{
-      return this.httpClient.delete(`${this.baseURI}/deleteRequest/${id}`).pipe(
+      return this.httpClient.delete(`${this.baseURI}/eliminarSolicitud/${id}`).pipe(
          catchError(
             e => {
                alert('Ha ocurrido un error borrando solicitud')

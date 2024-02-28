@@ -3,17 +3,17 @@ import { RequestInterface } from "../interfaces/request-interface";
 export class RequestClass implements RequestInterface {
 
    //Mantener el orden
-   _id: any
-   requestId?: any
-   tenantId?: any
-   thirdPartiesId: any
-   userId?: any 
-   categoryId: any 
-   statusId: any 
-   description: any
-   amount: any
-   date?: any
-   invoice? : any
+   _id?: any
+   tenanId?: any
+   solicitudId?: any
+   terceroId: any
+   categoriaId: any 
+   estadoId: any 
+   detalle: any
+   valor: any
+   fecha?: any
+   facturaUrl? : any
+
 
    constructor(
       thirdPartiesId: any,
@@ -21,107 +21,65 @@ export class RequestClass implements RequestInterface {
       statusId: any,
       description: any,
       amount: any,
-      tenantId?: any,
-      userId?: any ,
-      date?: any,
-      invoice?: any )
+      date: any,
+      invoice: any,
+      _id?: any)
    {
-      this.thirdPartiesId = thirdPartiesId;
-      this.categoryId = categoryId;
-      this.statusId = statusId;
-      this.description = description;
-      this.amount = amount;
-      this.tenantId = tenantId;
-      this.userId = userId;
-      this.date = date;
-      this.invoice = invoice;
+      this._id = _id
+      this.terceroId = thirdPartiesId;
+      this.categoriaId = categoryId;
+      this.estadoId = statusId;
+      this.detalle = description;
+      this.valor = amount;
+      this.fecha = date;
+      this.facturaUrl = invoice;
    }
-
    set setthirdPartiesId(thirdPartiesId:any){
-      this.thirdPartiesId = thirdPartiesId;
+      this.terceroId = thirdPartiesId;
    }
    set setcategoryId(categoryId: any){
-      this.categoryId = categoryId;
+      this.categoriaId = categoryId;
    }
    set setstatusId(statusId: any){
-      this.statusId = statusId;
+      this.estadoId = statusId;
    }
    set setdescription(description: any){
-      this.description = description;
+      this.detalle = description;
    }
    set setamount(amount: any){
-      this.amount = amount;
-   }
-   set settenantId(tenantId: any){
-      this.tenantId = tenantId;
-   }
-   set setuserId(userId: any){
-      this.userId = userId;
+      this.valor = amount;
    }
    set setdate(date:any){
-      this.date = date
+      this.fecha = date
    }
    set setinvoice(invoice: any){
-      this.invoice = invoice;
+      this.facturaUrl = invoice;
    }
 
    get getid(){
       return this._id
    }
-   get getrequestId(){
-      return this.requestId
-   }
    get getthirdParties(){
-      return this.thirdPartiesId
+      return this.terceroId
    }
    get getcategory(){
-      return this.categoryId
+      return this.categoriaId
    }
    get getstatus(){
-      return this.statusId
+      return this.estadoId
    }
    get getdescription(){
-      return this.description
+      return this.detalle
    }
    get getamount(){
-      return this.amount
-   }
-   get gettenant(){
-      return this.tenantId
-   }
-   get getuser(){
-      return this.userId
+      return this.valor
    }
    get getdate(){
-      return this.date
+      return this.fecha
    }
    get getinvoice(){
-      return this.invoice
+      return this.facturaUrl
    }
 
 }
 
-
-/*
-constructor(
-   tenantId: string,
-   thirdPartiesId: any,
-   userId: any ,
-   categoryId: any ,
-   statusId: any ,
-   description: string,
-   amount: number,
-   date: Date,
-   invoice : string )
-{
-   this.tenantId = tenantId;
-   this.thirdPartiesId = thirdPartiesId;
-   this.userId = userId;
-   this.categoryId = categoryId;
-   this.statusId = statusId;
-   this.date = date;
-   this.description = description;
-   this.amount = amount;
-   this.invoice = invoice;
-}
-*/

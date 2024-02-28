@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { FormControl,FormGroup,Validators } from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
@@ -39,12 +40,45 @@ export class DetailRequestComponent {
       console.log("Cerrando detalle")
    }
 
-   authorize(){}
-   denied(){}
-   finalize(){}
-   sendInvoice(){}
-
+   authorize(){
+      let idStatus = ''
+      this.requestService.updateRequestStatus$(this.request?._id).subscribe( 
+         (data) => {
+            (data)? alert('Solicitud creada exitosamente') : alert('Problema enviando solicitud')
+         })
+      this.modalService.dismissAll()
+   }
+   denied(){
+      let idStatus = ''
+      this.requestService.updateRequestStatus$(this.request?._id).subscribe( 
+         (data) => {
+            (data)? alert('Solicitud creada exitosamente') : alert('Problema enviando solicitud')
+         })
+      this.modalService.dismissAll()
+   }
+   finalize(){
+      let idStatus = ''
+      this.requestService.updateRequestStatus$(this.request?._id).subscribe( 
+         (data) => {
+            (data)? alert('Solicitud creada exitosamente') : alert('Problema enviando solicitud')
+         })
+      this.modalService.dismissAll()
+   }
+   sendInvoice(){
+      this.requestService.updateRequestInvoice$(this.request?._id, this.formRequest.value['file_v']).subscribe( 
+         (data) => {
+            (data)? alert('Solicitud creada exitosamente') : alert('Problema enviando solicitud')
+         })
+      this.modalService.dismissAll()
+   }
 
    //OTRAS FUNCIONES
+   formRequest = new FormGroup({
+      'file_v': new FormControl('', [
+         Validators.required
+      ])
+   })
+   //getter de validaciones
+   get file_v(){ return this.formRequest.get('file_v') as FormControl }
 
 }
